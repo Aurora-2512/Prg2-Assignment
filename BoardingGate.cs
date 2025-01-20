@@ -14,7 +14,7 @@ namespace FlightInfoDisplay
         private bool supportLWTT;
         private Flight flight;
 
-        public BoardingGate(string gateName, bool supportCFFT, bool supportDDJB, bool supportLWTT, Flight flight)
+        public BoardingGate(string gateName, bool supportDDJB, bool supportCFFT, bool supportLWTT, Flight flight)
         {
             this.GateName = gateName;
             this.supportCFFT = supportCFFT;
@@ -28,6 +28,11 @@ namespace FlightInfoDisplay
         public double calculateFees()
         {
             return 0;
+        }
+
+        public override string ToString()
+        {
+            return $"{GateName,-10} {supportDDJB,-8} {supportCFFT,-8} {supportLWTT,-8}";
         }
     }
 

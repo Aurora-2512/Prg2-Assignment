@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FlightInfoDisplay
 {
-    internal abstract class Flight
+    internal class Flight
     {
         private string flightNumber;
         private string origin;
@@ -20,6 +20,10 @@ namespace FlightInfoDisplay
         public DateTime ExpectedDateTime { get => expectedDateTime; set => expectedDateTime = value; }
         public string Status { get => status; set => status = value; }
 
+        public Flight()
+        {
+        }
+
         public Flight(string flightNumber, string origin, string destination, DateTime expectedDateTime, string status)
         {
             FlightNumber = flightNumber;
@@ -29,8 +33,12 @@ namespace FlightInfoDisplay
             Status = status;
         }
 
-        public abstract double CalculateFees();
+        public double CalculateFees()
+        {
+            return 0;
+        }
 
+       
         public override string? ToString()
         {
             return base.ToString();

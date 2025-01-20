@@ -17,7 +17,7 @@ namespace FlightInfoDisplay
             RequestFee = requestFee;
         }
 
-        public override double CalculateFees()
+        public double CalculateFees()
         {
             throw new NotImplementedException();
         }
