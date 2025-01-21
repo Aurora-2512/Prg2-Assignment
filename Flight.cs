@@ -41,7 +41,7 @@ namespace FlightInfoDisplay
        
         public override string? ToString()
         {
-            return base.ToString();
+            return $"Flight Number: {FlightNumber}\nOrigin: {Origin}\nDestination: {Destination}\nExpected Time: {ExpectedDateTime}\n";
         }
     }
 }

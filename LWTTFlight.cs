@@ -23,6 +23,9 @@ namespace FlightInfoDisplay
             throw new NotImplementedException();
         }
 
-
+        public override string? ToString()
+        {
+            return base.ToString() + $"Special Request Code: LWTT";
+        }
     }
 }

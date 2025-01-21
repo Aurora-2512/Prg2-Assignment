@@ -12,18 +12,22 @@ namespace FlightInfoDisplay
         private bool supportCFFT;
         private bool supportDDJB;
         private bool supportLWTT;
-        private Flight flight;
+        private Flight f;
 
-        public BoardingGate(string gateName, bool supportDDJB, bool supportCFFT, bool supportLWTT, Flight flight)
+        public BoardingGate(string gateName, bool supportDDJB, bool supportCFFT, bool supportLWTT)
         {
             this.GateName = gateName;
             this.supportCFFT = supportCFFT;
             this.supportDDJB = supportDDJB;
             this.supportLWTT = supportLWTT;
-            this.flight = flight;
+            
         }
 
         public string GateName { get => gateName; set => gateName = value; }
+        public bool SupportCFFT { get => supportCFFT; set => supportCFFT = value; }
+        public bool SupportDDJB { get => supportDDJB; set => supportDDJB = value; }
+        public bool SupportLWTT { get => supportLWTT; set => supportLWTT = value; }
+        internal Flight F { get => f; set => f = value; }
 
         public double calculateFees()
         {

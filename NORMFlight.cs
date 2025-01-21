@@ -19,7 +19,7 @@ namespace FlightInfoDisplay
 
         public override string ToString() 
         {
-            return base.ToString();
+            return base.ToString()+$"Special Request Code: None";
         }
     }
 }
