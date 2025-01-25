@@ -16,24 +16,23 @@ namespace FlightInfoDisplay
         public string Code { get => code; set => code = value; }
         internal Dictionary<string, Flight> Flights { get => flights; set => flights = value; }
 
-        public Airline(string name, string code, Dictionary<string, Flight> flights)
+        public Airline(string name, string code)
         {
             this.Name = name;
             this.Code = code;
-            this.Flights = flights;
+            flights = new Dictionary<string, Flight>();
         }
 
-        public bool AddFlight(Flight f)
+        public void AddFlight(Flight f)
         {
             Flights.Add(f.FlightNumber, f);
-            return true;
+            
         }
 
-        public bool RemoveFlight(Flight f)
+        public void RemoveFlight(Flight f)
         {
             {
                 Flights.Remove(f.FlightNumber);
-                return true;
             }
         }
 
@@ -45,7 +44,7 @@ namespace FlightInfoDisplay
 
         public override string? ToString()
         {
-            return base.ToString();
+            return $"{Code,-15} {Name,-30}";
         }
     }
 }

@@ -8,7 +8,7 @@ namespace FlightInfoDisplay
 {
     internal class NORMFlight : Flight
     {
-        public NORMFlight(string flightNumber, string origin, string destination, DateTime expectedDateTime, string status) : base(flightNumber, origin, destination, expectedDateTime, status)
+        public NORMFlight(string flightNumber, string origin, string destination, DateTime expectedDateTime) : base(flightNumber, origin, destination, expectedDateTime)
         {
         }
 

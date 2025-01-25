@@ -24,13 +24,13 @@ namespace FlightInfoDisplay
         {
         }
 
-        public Flight(string flightNumber, string origin, string destination, DateTime expectedDateTime, string status)
+        public Flight(string flightNumber, string origin, string destination, DateTime expectedDateTime)
         {
             FlightNumber = flightNumber;
             Origin = origin;
             Destination = destination;
             ExpectedDateTime = expectedDateTime;
-            Status = status;
+            
         }
 
         public double CalculateFees()

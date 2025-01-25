@@ -13,9 +13,9 @@ namespace FlightInfoDisplay
         public double RequestFee { get => requestFee; set => requestFee = value; }
 
 
-        public LWTTFlight(string flightNumber, string origin, string destination, DateTime expectedDateTime, string status,double requestFee) : base(flightNumber, origin, destination, expectedDateTime, status)
+        public LWTTFlight(string flightNumber, string origin, string destination, DateTime expectedDateTime) : base(flightNumber, origin, destination, expectedDateTime)
         {
-            RequestFee = requestFee;
+            
         }
 
         public double CalculateFees()

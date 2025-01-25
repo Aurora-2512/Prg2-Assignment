@@ -9,7 +9,7 @@ sr.ReadLine();
 while(!(sr.EndOfStream))
 {
     string[] arr = sr.ReadLine().Split(',');
-    airlines.Add(arr[1],new Airline(arr[0], arr[1],new Dictionary<string, Flight>()));
+    airlines.Add(arr[1],new Airline(arr[0], arr[1]));
 }
 sr.Close();
 
@@ -31,26 +31,32 @@ while(!(fl.EndOfStream))
     Flight f;
     if (arr[4].Equals("DDJB"))
     {
-        f = new DDJBFlight(arr[0], arr[1], arr[2], DateTime.Parse(arr[3]), "", 0);
+        f = new DDJBFlight(arr[0], arr[1], arr[2], DateTime.Parse(arr[3]));
     }
     else if (arr[4].Equals("CFFT"))
     {
-        f = new CFFTFlight(arr[0], arr[1], arr[2], DateTime.Parse(arr[3]), "", 0);
+        f = new CFFTFlight(arr[0], arr[1], arr[2], DateTime.Parse(arr[3]));
     }
     else if (arr[4].Equals("LWTT"))
     {
-        f = new LWTTFlight(arr[0], arr[1], arr[2], DateTime.Parse(arr[3]), "", 0);
+        f = new LWTTFlight(arr[0], arr[1], arr[2], DateTime.Parse(arr[3]));
     }
     else
     {
-        f = new NORMFlight(arr[0], arr[1], arr[2], DateTime.Parse(arr[3]), "");
+        f = new NORMFlight(arr[0], arr[1], arr[2], DateTime.Parse(arr[3]));
     }
     flight.Add(f.FlightNumber,f);
+    string airlineCode = arr[0].Substring(0, 2);
+    Airline airline = airlines[airlineCode];
+    airline.AddFlight(f);
 }
 
 //displayFlightsInfo(flight);
 //displayBoardingGate(boardingGate);
 assignboardingGateToflight();
+//createNewFlight();
+displayFlightsOfAirline();
+
 void displayFlightsInfo(Dictionary<string,Flight> flights)
 {
     Console.WriteLine($"{"Flight Number",-14} {"Airline Name",-20} {"Origin",-22} {"Destination",-18} {"Expected Departure/Arrival Time",-40}");
@@ -113,6 +119,7 @@ void assignboardingGateToflight()
                 Console.WriteLine("Please choose the boarding gate again that support special request code");
             }
         }
+        //Validation for not free 
     }
     
     Console.WriteLine("Would you like to update the status of the flight? (Y / N)");
@@ -162,4 +169,116 @@ bool checkSRC(BoardingGate bg,Flight f)
     return false;
 }
 
+//6
+void createNewFlight() 
+{
+    string choiceYesNo = "N";
+    do{
+        Console.Write("Enter Flight Number,Origin,Destination,Expected Arrival/Departure Time:  ");
+        string[] arr = Console.ReadLine().Split(',');
+        string flightNumber = arr[0];
+        string origin = arr[1];
+        string dest = arr[2];
+        DateTime time = DateTime.Parse(arr[3]);
+        Console.Write("Enter Y(yes) or N(no) for special request code: ");
+        string opt = Console.ReadLine();
+        string spCode = "";
+        Flight newFlight = null;
+        StreamWriter sw = new StreamWriter("flight.csv", append: true);
+        if (opt.ToUpper() == "Y")
+        {
+            Console.Write("Choose 1,2, or 3 for special request code\n1. DDJB\n2. LWTT\n3. CFFT\nEnter Your choice: ");
+            int choice = int.Parse(Console.ReadLine());
+            switch (choice)
+            {
+                case 1:
+                    {
+                        spCode = "DDJB";
+                        newFlight = new DDJBFlight(flightNumber, origin, dest, time);
+                        sw.WriteLine($"{newFlight.FlightNumber},{newFlight.Origin},{newFlight.Destination},{newFlight.ExpectedDateTime},{"DDJB"}");
+                        break;
+                    }
+                case 2:
+                    {
+                        spCode = "LWTT";
+                        newFlight = new LWTTFlight(flightNumber, origin, dest, time);
+                        sw.WriteLine($"{newFlight.FlightNumber},{newFlight.Origin},{newFlight.Destination},{newFlight.ExpectedDateTime},{"LWTT"}");
+                        break;
+                    }
+                case 3:
+                    {
+                        spCode = "CFFT";
+                        newFlight = new CFFTFlight(flightNumber, origin, dest, time);
+                        sw.WriteLine($"{newFlight.FlightNumber},{newFlight.Origin},{newFlight.Destination},{newFlight.ExpectedDateTime},{"CFFT"}");
+                        break;
+                    }
+            }
+        }
+        else
+        {
+            newFlight = new NORMFlight(flightNumber, origin, dest, time);
+        }
+        sw.Close();
+        flight.Add(newFlight.FlightNumber, newFlight);
+        Console.WriteLine("Successfully added new Flight");
+        Console.WriteLine("Do you want to add new flight, type Y(yes) or N(no)?");
+        choiceYesNo = Console.ReadLine();
+    }
+    while (choiceYesNo.ToUpper() == "Y");
+ 
+}
+
+//7
+void displayFlightsOfAirline()
+{
+    Console.WriteLine($"{"Airline Code",-15} {"Airline Name",-30}");
+    foreach(var airline in airlines.Values)
+    {
+        Console.WriteLine(airline.ToString());
+    }
+    Console.Write("Enter an airline code to check available flight on this airline: ");
+    string aircode=Console.ReadLine();
+    Airline selectedAirline= airlines[aircode];
+    Console.WriteLine($"Flights of {selectedAirline.Name}:");
+    Dictionary<string,Flight> flightfromAirLine=selectedAirline.Flights;
+    Console.WriteLine($"{"Flight Number",-15} {"Origin",-20} {"Destination",-20}");
+    foreach(var flight in flightfromAirLine.Values) 
+    { 
+        Console.WriteLine($"{flight.FlightNumber,-15} {flight.Origin,-20} {flight.Destination,-20}"); 
+    }
+    Console.Write("Enter Flight Number to details: ");
+    string fNumber=Console.ReadLine();
+    
+   // Console.WriteLine($"{"Flight Number",-14} {"Airline Name",-20} {"Origin",-22} {"Destination",-18} {"Expected Departure/Arrival Time",-40} {"Special Request Code",-25} {"Boarding Gate",-15}");
+    Flight fl = flightfromAirLine[fNumber];
+    if (fl is NORMFlight)
+    {
+        fl = (NORMFlight)fl;
+    }
+    else if (fl is DDJBFlight)
+    {
+        fl = (DDJBFlight)fl;
+    }
+    else if (fl is LWTTFlight)
+    {
+        fl = (LWTTFlight)fl;
+    }
+    else
+    {
+        fl = (CFFTFlight)fl;
+    }
+    Console.WriteLine(fl.ToString());
+    foreach(var bg in boardingGates.Values)
+    { 
+        if(bg.F != null)
+        {
+            if (bg.F.FlightNumber == fl.FlightNumber)
+            {
+                Console.WriteLine($"Boarding Gate: {bg.GateName}");
+            }
+        }
+        
+    }
+
+}
 
